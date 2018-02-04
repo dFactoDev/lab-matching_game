@@ -1,0 +1,60 @@
+
+Main():
+	cardIcons = [icon1, icon2, icon3, ... ]
+	Deck = ShuffleDeck(cardIcons) // create new deck with cards randomly assinged
+	layoutDeck(Deck)
+	
+	openCard = ''
+	clickedCard = ''
+	matchCount = 0
+	moveCount = 0
+	lastMatchStatus = false
+	
+	if (click on card):
+		if (no openCard):
+			openCard = clickedCard
+			show openCard
+		else if (clickedCard !== openCard):
+			moveCount += 1
+			if (clickedCard.image == openCard.image):
+				matchCount += 1
+				matchAnimation()
+				lastMatchStatus = true
+				show clickedCard
+			else:
+				show clickedCard
+			
+		if matchCount == 6:
+			print('Congrats,' + moveCount + ' moves!') 
+		else if lastMatchStatus !== true:
+			hide clickedCard
+	
+layoutDeck(array Deck, array ul):
+	for i in Deck:
+		for li in ul:
+			ul.addClass[i]
+			
+		
+	
+function ShuffleDeck(array) {
+	  var m = array.length, t, i;
+
+	  // While there remain elements to shuffle…
+	  while (m) {
+
+		// Pick a remaining element…
+		i = Math.floor(Math.random() * m--);
+
+		// And swap it with the current element.
+		t = array[m];
+		array[m] = array[i];
+		array[i] = t;
+	  }
+
+	  return array;
+	}
+						
+					
+				
+		
+	
