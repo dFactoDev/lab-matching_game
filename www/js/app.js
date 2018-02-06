@@ -38,12 +38,22 @@ function shuffle(array) {
     return array;
 }
 
+function cardClicked(clickedCard) {
+    console.log(clickedCard.target.children[0].classList);
+}
+
 var cardSet = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb', 
     'fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb'];
 
 domDeckUl = document.getElementsByClassName('deck')[0]; //get DOM node representing deck UL
 
 document.querySelector('div.restart').addEventListener('click', function() { freshDeck(cardSet, domDeckUl); });
+domCards = domDeckUl.getElementsByClassName('card');
+
+for (i=0; i < domCards.length; i++ ) { domCards[i].addEventListener('click', 
+    function(e) { cardClicked(e); });
+}
+
 
 //document.
 
