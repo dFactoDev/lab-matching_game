@@ -3,31 +3,26 @@ Main():
 	cardIcons = [icon1, icon2, icon3, ... ]
 	Deck = ShuffleDeck(cardIcons) // create new deck with cards randomly assinged
 	layoutDeck(Deck)
-	
-	openCard = ''
-	clickedCard = ''
+	cardsClicked = []
 	matchCount = 0
 	moveCount = 0
-	lastMatchStatus = false
 	
 	if (click on card):
-		if (no openCard):
-			openCard = clickedCard
-			show openCard
-		else if (clickedCard !== openCard):
+		add card to cardsClicked
+		if (cardsClicked = NULL): //no other card currently open
+			show card
+		else: // other card already open
 			moveCount += 1
-			if (clickedCard.image == openCard.image):
+			show card
+			if (cardsClicked[0] == cardsClicked[1])
 				matchCount += 1
-				matchAnimation()
-				lastMatchStatus = true
-				show clickedCard
+				for (i in cardsClicked):
+					open card //lock in open position
+				if (matchCount == 6):
+					endGame();
 			else:
-				show clickedCard
-			
-		if matchCount == 6:
-			print('Congrats,' + moveCount + ' moves!') 
-		else if lastMatchStatus !== true:
-			hide clickedCard
+				for (i in cardsClicked):
+					close card
 	
 layoutDeck(array Deck, array ul):
 	for i in Deck:
