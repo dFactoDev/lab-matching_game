@@ -1,26 +1,25 @@
 
-function freshDeck(arrayCardSet) {
+function freshDeck(arrayCardSet, elementDeckUl) {
     
     var deck = shuffle(arrayCardSet);
-    layoutDeck(deck);
+    layoutDeck(arrayCardSet, elementDeckUl);
  
 }
 
-// Generate HTML for deck, update DOM
-function layoutDeck(arrayDeck) {
+// Update DOM with new Deck
+function layoutDeck(arrayDeck, elementDeckUl) {
     // arrayDeck - array containing the deck of cards
 
-    ulDeck = document.getElementsByClassName('deck')[0];
-    ulDeckParent = ulDeck.parentNode;
+    ulDeckParent = elementDeckUl.parentNode; //to appendChild new deck later
 
     var docFrag = document.createDocumentFragment(); //Work on DocumentFragment to avoid reflow
-    docFrag.appendChild(ulDeck); // fill with 'deck' unordered list
+    docFrag.appendChild(elementDeckUl); // fill with current 'deck' unordered list
    
     for (var i = 0; i < arrayDeck.length; i++) {
         docFrag.firstChild.getElementsByClassName('card')[i].innerHTML='<li class="fa ' + arrayDeck[i] + '"></li>';
     }
     
-    ulDeckParent.appendChild(docFrag.firstChild);
+    ulDeckParent.appendChild(docFrag.firstChild); //update DOM with new elements in DocumentFragment
     
 }
 
@@ -39,12 +38,15 @@ function shuffle(array) {
     return array;
 }
 
-
 var cardSet = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb', 
     'fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb'];
 
+domDeckUl = document.getElementsByClassName('deck')[0]; //get DOM node representing deck UL
 
-document.querySelector('div.restart').addEventListener('click', function() { freshDeck(cardSet); });
+document.querySelector('div.restart').addEventListener('click', function() { freshDeck(cardSet, domDeckUl); });
+
+//document.
+
 
 /*
  * set up the event listener for a card. If a card is clicked:
