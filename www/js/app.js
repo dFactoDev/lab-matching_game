@@ -1,18 +1,27 @@
 
-var cardSet = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb', 
-    'fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb'];
+function freshDeck(arrayCardSet) {
+    
+    var deck = shuffle(arrayCardSet);
+    layoutDeck(deck);
+ 
+}
 
-
-var Deck = shuffle(cardSet);
-
-console.log(layoutDeck(Deck));
-
+// Generate HTML for deck, update DOM
 function layoutDeck(arrayDeck) {
-    var layoutHTML = [];
-    for (var i in arrayDeck) {
-        layoutHTML.push('<li class="fa ' + arrayDeck[i] + '"></li>');
+    // arrayDeck - array containing the deck of cards
+
+    ulDeck = document.getElementsByClassName('deck')[0];
+    ulDeckParent = ulDeck.parentNode;
+
+    var docFrag = document.createDocumentFragment(); //Work on DocumentFragment to avoid reflow
+    docFrag.appendChild(ulDeck); // fill with 'deck' unordered list
+   
+    for (var i = 0; i < arrayDeck.length; i++) {
+        docFrag.firstChild.getElementsByClassName('card')[i].innerHTML='<li class="fa ' + arrayDeck[i] + '"></li>';
     }
-    return layoutHTML;
+    
+    ulDeckParent.appendChild(docFrag.firstChild);
+    
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -30,6 +39,12 @@ function shuffle(array) {
     return array;
 }
 
+
+var cardSet = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb', 
+    'fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb'];
+
+
+document.querySelector('div.restart').addEventListener('click', function() { freshDeck(cardSet); });
 
 /*
  * set up the event listener for a card. If a card is clicked:
