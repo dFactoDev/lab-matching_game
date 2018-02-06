@@ -1,14 +1,28 @@
-/*
- * Create a list that holds all of your cards
- */
 
+function freshDeck(arrayCardSet) {
+    
+    var deck = shuffle(arrayCardSet);
+    layoutDeck(deck);
+ 
+}
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+// Generate HTML for deck, update DOM
+function layoutDeck(arrayDeck) {
+    // arrayDeck - array containing the deck of cards
+
+    ulDeck = document.getElementsByClassName('deck')[0];
+    ulDeckParent = ulDeck.parentNode;
+
+    var docFrag = document.createDocumentFragment(); //Work on DocumentFragment to avoid reflow
+    docFrag.appendChild(ulDeck); // fill with 'deck' unordered list
+   
+    for (var i = 0; i < arrayDeck.length; i++) {
+        docFrag.firstChild.getElementsByClassName('card')[i].innerHTML='<li class="fa ' + arrayDeck[i] + '"></li>';
+    }
+    
+    ulDeckParent.appendChild(docFrag.firstChild);
+    
+}
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -25,6 +39,12 @@ function shuffle(array) {
     return array;
 }
 
+
+var cardSet = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb', 
+    'fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb'];
+
+
+document.querySelector('div.restart').addEventListener('click', function() { freshDeck(cardSet); });
 
 /*
  * set up the event listener for a card. If a card is clicked:
