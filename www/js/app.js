@@ -8,6 +8,8 @@ var openCards = []; //list of open cards
 
 domDeckUl = document.getElementsByClassName('deck')[0]; //get DOM node representing deck UL
 
+document.onLoad = freshDeck(cardSet, domDeckUl); // create fresh deck on doc load
+
 document.querySelector('div.restart').addEventListener('click', function() { freshDeck(cardSet, domDeckUl); }); // add listener to restart button
 domCards = domDeckUl.getElementsByClassName('card'); // cards li elements
 
@@ -17,7 +19,10 @@ for (i=0; i < domCards.length; i++ ) { domCards[i].addEventListener('click',
 
 function cardClicked(clickedCard) {
    
-    if (clickedCard.classList.contains('open') || !clickedCard.classList.contains('card')) { return; }
+    if (clickedCard.classList.contains('open')
+            || clickedCard.classList.contains('show') 
+            || clickedCard.classList.contains('match')
+            || !clickedCard.classList.contains('card') ) { return; } //ensure only closed cards get processed
     
     if (!cardsClicked.length) { // if no other card currently open
         clickedCard.classList.add('show', 'open'); // add 'open' class to card
@@ -40,12 +45,10 @@ function cardClicked(clickedCard) {
         }
         cardsClicked.splice(0);
         moveCount++;
-    }
-    
-    if (matchCount === 8) {
-        console.log('ALL DONE'); // TODO: endGame function
+        updateMovesDisplay(moveCount);
     }
 }
+
 
 function freshDeck(arrayCardSet, elementDeckUl) {
     
@@ -53,6 +56,11 @@ function freshDeck(arrayCardSet, elementDeckUl) {
     layoutDeck(arrayCardSet, elementDeckUl);
     resetCardDisplay(elementDeckUl);
     moveCount = 0;
+    updateMovesDisplay(moveCount);
+}
+
+function updateMovesDisplay(moves) {
+    document.querySelector('span.moves').innerHTML = moves.toString();
 }
 
 function resetCardDisplay(elementDeckUl) {
