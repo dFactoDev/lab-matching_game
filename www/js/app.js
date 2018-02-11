@@ -51,8 +51,23 @@ function freshDeck(arrayCardSet, elementDeckUl) {
     
     var deck = shuffle(arrayCardSet);
     layoutDeck(arrayCardSet, elementDeckUl);
+    resetCardDisplay(elementDeckUl);
+    moveCount = 0;
 }
 
+function resetCardDisplay(elementDeckUl) {
+    
+    ulDeckParent = elementDeckUl.parentNode; //to appendChild new deck later
+    
+    var docFrag = document.createDocumentFragment();
+    docFrag.appendChild(elementDeckUl);
+    
+    for (var i = 0; i < elementDeckUl.children.length; i++) {
+        docFrag.firstChild.children[i].classList.remove('open', 'show', 'match');
+    }
+    
+    ulDeckParent.appendChild(docFrag.firstChild);
+}
 
 // Update DOM with new Deck
 function layoutDeck(arrayDeck, elementDeckUl) {
