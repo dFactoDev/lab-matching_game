@@ -1,10 +1,58 @@
+var cardSet = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb', 
+    'fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb'];
+
+var moveCount = 0; // # of attempts by user 
+var cardsClicked = []; //list of currently selected cards
+var matchCount = 0; // to determine when all matches were made
+var openCards = []; //list of open cards
+
+domDeckUl = document.getElementsByClassName('deck')[0]; //get DOM node representing deck UL
+
+document.querySelector('div.restart').addEventListener('click', function() { freshDeck(cardSet, domDeckUl); }); // add listener to restart button
+domCards = domDeckUl.getElementsByClassName('card'); // cards li elements
+
+for (i=0; i < domCards.length; i++ ) { domCards[i].addEventListener('click', 
+    function(e) { cardClicked(e.target); }); // add listener to each card li element
+}
+
+function cardClicked(clickedCard) {
+   
+    if (clickedCard.classList.contains('open') || !clickedCard.classList.contains('card')) { return; }
+    
+    if (!cardsClicked.length) { // if no other card currently open
+        clickedCard.classList.add('show', 'open'); // add 'open' class to card
+        cardsClicked.push(clickedCard); // add to open card list
+    }
+    else {
+        cardsClicked.push(clickedCard); 
+        if (cardsClicked[0].children[0].classList.toString() === cardsClicked[1].children[0].classList.toString()) { // if selected cards match
+            for (var i = 0; i < cardsClicked.length; i++) {
+                cardsClicked[i].classList.add('match'); // add 'match' class to card
+            }
+            matchCount++; // increase match count
+        }
+        else { // if no match
+            clickedCard.classList.add('show'); // just show the card symbol
+            var cardsToClose = [ cardsClicked[0], cardsClicked[1]];
+            setTimeout(function() { 
+                for (var i = 0; i < cardsToClose.length; i++) { cardsToClose[i].classList.remove('show', 'open'); } 
+                }, 500);
+        }
+        cardsClicked.splice(0);
+        moveCount++;
+    }
+    
+    if (matchCount === 8) {
+        console.log('ALL DONE'); // TODO: endGame function
+    }
+}
 
 function freshDeck(arrayCardSet, elementDeckUl) {
     
     var deck = shuffle(arrayCardSet);
     layoutDeck(arrayCardSet, elementDeckUl);
- 
 }
+
 
 // Update DOM with new Deck
 function layoutDeck(arrayDeck, elementDeckUl) {
@@ -38,24 +86,10 @@ function shuffle(array) {
     return array;
 }
 
-function cardClicked(clickedCard) {
-    console.log(clickedCard.target.children[0].classList);
-}
-
-var cardSet = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb', 
-    'fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb'];
-
-domDeckUl = document.getElementsByClassName('deck')[0]; //get DOM node representing deck UL
-
-document.querySelector('div.restart').addEventListener('click', function() { freshDeck(cardSet, domDeckUl); });
-domCards = domDeckUl.getElementsByClassName('card');
-
-for (i=0; i < domCards.length; i++ ) { domCards[i].addEventListener('click', 
-    function(e) { cardClicked(e); });
-}
 
 
-//document.
+
+
 
 
 /*
