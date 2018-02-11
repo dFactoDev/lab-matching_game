@@ -1,5 +1,5 @@
-var cardSet = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb', 
-    'fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb'];
+var cardSet = ['fa-diamond', 'fa-diamond', 'fa-paper-plane-o', 'fa-paper-plane-o', 'fa-anchor', 'fa-anchor', 'fa-bolt', 'fa-bolt', 
+    'fa-cube', 'fa-cube', 'fa-leaf', 'fa-leaf', 'fa-bicycle', 'fa-bicycle', 'fa-bomb', 'fa-bomb'];
 
 var moveCount = 0; // # of attempts by user 
 var cardsClicked = []; //list of currently selected cards
@@ -47,20 +47,58 @@ function cardClicked(clickedCard) {
         moveCount++;
         updateMovesDisplay(moveCount);
     }
+    
+    if (matchCount === 8) {
+        updateScoreDisplay(false, moveCount, 13, 20);
+    }
+    
 }
 
 
 function freshDeck(arrayCardSet, elementDeckUl) {
     
     var deck = shuffle(arrayCardSet);
-    layoutDeck(arrayCardSet, elementDeckUl);
-    resetCardDisplay(elementDeckUl);
+    
     moveCount = 0;
+    matchCount = 0;
+    
+    layoutDeck(deck, elementDeckUl);
+    resetCardDisplay(elementDeckUl);
     updateMovesDisplay(moveCount);
+    updateScoreDisplay(true);
 }
 
 function updateMovesDisplay(moves) {
     document.querySelector('span.moves').innerHTML = moves.toString();
+}
+
+function updateScoreDisplay(boolReset, moves, threshold3Star, threshold2Star) {
+    
+    domStars = document.querySelector('ul.stars');
+    
+    if (boolReset) {
+        domStars.children[0].style.color = 'black';
+        domStars.children[1].style.color = 'black';
+        domStars.children[2].style.color = 'black';
+    }
+    else {
+        switch (true) {
+            case (moves <= threshold3Star):
+                domStars.children[0].style.color = 'orange';
+                domStars.children[1].style.color = 'orange';
+                domStars.children[2].style.color = 'orange';
+                break;
+            case (moves <= threshold2Star):
+                domStars.children[0].style.color = 'orange';
+                domStars.children[1].style.color = 'orange';
+                domStars.children[2].style.color = 'black';
+                break;
+            default :
+                domStars.children[0].style.color = 'orange';
+                domStars.children[1].style.color = 'black';
+                domStars.children[2].style.color = 'black';   
+        }
+    }           
 }
 
 function resetCardDisplay(elementDeckUl) {
