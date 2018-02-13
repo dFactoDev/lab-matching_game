@@ -49,6 +49,7 @@ h1 {
     justify-content: space-between;
     align-items: center;
     margin: 0 0 3em;
+    position: relative;
 }
 
 .deck .card {
@@ -81,9 +82,16 @@ h1 {
     font-size: 33px;
 }
 
-/*
- * Styles for the Score Panel
- */
+.congrats {
+    text-align: center;
+    width: 95%;
+    position: absolute;
+    background-color: aquamarine;
+    border-radius: 30px;
+    border: solid 5px darkgoldenrod;
+    left: 15px;
+    display: none;
+}
 
 .score-panel {
     text-align: left;
@@ -101,6 +109,19 @@ h1 {
 .score-panel .stars li {
     list-style: none;
     display: inline-block;
+}
+
+.congrats .stars {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    margin: 0px 0px 15px 0px;
+}
+
+.congrats .stars li {
+    list-style: none;
+    display: inline-block;
+    font-size: 2em;
 }
 
 .score-panel .restart {

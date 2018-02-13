@@ -7,10 +7,13 @@ var matchCount = 0; // to determine when all matches were made
 var openCards = []; //list of open cards
 
 domDeckUl = document.getElementsByClassName('deck')[0]; //get DOM node representing deck UL
+divCongrats = document.querySelector('div.congrats'); // congrats div
+ulStars = document.querySelector('ul.stars'); // top left stars
+ulCongratsStars = document.querySelector('.congrats .stars'); // congrats box stars
 
-document.onLoad = freshDeck(cardSet, domDeckUl); // create fresh deck on doc load
+document.onLoad = freshDeck(cardSet, domDeckUl, divCongrats); // create fresh deck on doc load
 
-document.querySelector('div.restart').addEventListener('click', function() { freshDeck(cardSet, domDeckUl); }); // add listener to restart button
+document.querySelector('div.restart').addEventListener('click', function() { freshDeck(cardSet, domDeckUl, divCongrats); }); // add listener to restart button
 domCards = domDeckUl.getElementsByClassName('card'); // cards li elements
 
 for (i=0; i < domCards.length; i++ ) { domCards[i].addEventListener('click', 
@@ -25,22 +28,22 @@ function cardClicked(clickedCard) {
             || !clickedCard.classList.contains('card') ) { return; } //ensure only closed cards get processed
     
     if (!cardsClicked.length) { // if no other card currently open
-        clickedCard.classList.add('show', 'open'); // add 'open' class to card
+        toggleCardStatus('open', clickedCard); // open card
         cardsClicked.push(clickedCard); // add to open card list
     }
     else {
         cardsClicked.push(clickedCard); 
         if (cardsClicked[0].children[0].classList.toString() === cardsClicked[1].children[0].classList.toString()) { // if selected cards match
             for (var i = 0; i < cardsClicked.length; i++) {
-                cardsClicked[i].classList.add('match'); // add 'match' class to card
+                toggleCardStatus('match', cardsClicked[i]); // change card display to matched
             }
             matchCount++; // increase match count
         }
         else { // if no match
-            clickedCard.classList.add('show'); // just show the card symbol
+            toggleCardStatus('show', clickedCard); // just show the card symbol
             var cardsToClose = [ cardsClicked[0], cardsClicked[1]];
             setTimeout(function() { 
-                for (var i = 0; i < cardsToClose.length; i++) { cardsToClose[i].classList.remove('show', 'open'); } 
+                for (var i = 0; i < cardsToClose.length; i++) { toggleCardStatus('close', cardsToClose[i]); } 
                 }, 500);
         }
         cardsClicked.splice(0);
@@ -49,13 +52,30 @@ function cardClicked(clickedCard) {
     }
     
     if (matchCount === 8) {
-        updateScoreDisplay(false, moveCount, 13, 20);
+        endGame(moveCount, divCongrats);
     }
     
 }
 
+function toggleCardStatus (stringStatus, elementCard) {
+    switch (stringStatus) {
+        case 'open':
+            elementCard.classList.add('show', 'open');
+            break;
+        case 'show':
+            elementCard.classList.add('show');
+            break;
+        case 'match':
+            elementCard.classList.add('match');
+            break;
+        case 'close':
+            elementCard.classList.remove('show', 'open', 'match');
+            break;
+    }
+        
+}
 
-function freshDeck(arrayCardSet, elementDeckUl) {
+function freshDeck(arrayCardSet, elementDeckUl, elementCongratsDiv) {
     
     var deck = shuffle(arrayCardSet);
     
@@ -65,38 +85,39 @@ function freshDeck(arrayCardSet, elementDeckUl) {
     layoutDeck(deck, elementDeckUl);
     resetCardDisplay(elementDeckUl);
     updateMovesDisplay(moveCount);
-    updateScoreDisplay(true);
+    updateScoreDisplay(ulStars, true);
+    
+    elementCongratsDiv.style.display = 'none';
+    
 }
 
 function updateMovesDisplay(moves) {
     document.querySelector('span.moves').innerHTML = moves.toString();
 }
 
-function updateScoreDisplay(boolReset, moves, threshold3Star, threshold2Star) {
-    
-    domStars = document.querySelector('ul.stars');
+function updateScoreDisplay(elementStars, boolReset, moves, threshold3Star, threshold2Star) {
     
     if (boolReset) {
-        domStars.children[0].style.color = 'black';
-        domStars.children[1].style.color = 'black';
-        domStars.children[2].style.color = 'black';
+         elementStars.children[0].style.color = 'black';
+         elementStars.children[1].style.color = 'black';
+         elementStars.children[2].style.color = 'black';
     }
     else {
         switch (true) {
             case (moves <= threshold3Star):
-                domStars.children[0].style.color = 'orange';
-                domStars.children[1].style.color = 'orange';
-                domStars.children[2].style.color = 'orange';
+                 elementStars.children[0].style.color = 'orange';
+                 elementStars.children[1].style.color = 'orange';
+                 elementStars.children[2].style.color = 'orange';
                 break;
             case (moves <= threshold2Star):
-                domStars.children[0].style.color = 'orange';
-                domStars.children[1].style.color = 'orange';
-                domStars.children[2].style.color = 'black';
+                 elementStars.children[0].style.color = 'orange';
+                 elementStars.children[1].style.color = 'orange';
+                 elementStars.children[2].style.color = 'black';
                 break;
             default :
-                domStars.children[0].style.color = 'orange';
-                domStars.children[1].style.color = 'black';
-                domStars.children[2].style.color = 'black';   
+                 elementStars.children[0].style.color = 'orange';
+                 elementStars.children[1].style.color = 'black';
+                 elementStars.children[2].style.color = 'black';   
         }
     }           
 }
@@ -109,9 +130,9 @@ function resetCardDisplay(elementDeckUl) {
     docFrag.appendChild(elementDeckUl);
     
     for (var i = 0; i < elementDeckUl.children.length; i++) {
-        docFrag.firstChild.children[i].classList.remove('open', 'show', 'match');
+                docFrag.firstChild.children[i].classList.remove('open', 'show', 'match');
     }
-    
+  
     ulDeckParent.appendChild(docFrag.firstChild);
 }
 
@@ -129,6 +150,24 @@ function layoutDeck(arrayDeck, elementDeckUl) {
     }
     
     ulDeckParent.appendChild(docFrag.firstChild); //update DOM with new elements in DocumentFragment
+    
+}
+
+function endGame(moves, elementCongratsDiv) {
+        
+    elementCongratsDiv.style.display = 'block';
+    
+    domDivCongratsParent = elementCongratsDiv.parentNode; // to appendChild document later
+    
+    var docFrag = document.createDocumentFragment(); // work on doc frag to avoid too many reflows
+    docFrag.appendChild(elementCongratsDiv);
+    
+    docFrag.firstChild.children[1].innerHTML = "You finished in " + moves + " moves!";
+    
+    domDivCongratsParent.appendChild(docFrag.firstChild);
+    
+    updateScoreDisplay(ulCongratsStars, false, moves, 13, 20);
+    updateScoreDisplay(ulStars, false, moves, 13, 20);
     
 }
 
