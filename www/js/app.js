@@ -6,7 +6,7 @@ var cardsClicked = []; //list of currently selected cards
 var matchCount = 0; // to determine when all matches were made
 var openCards = []; //list of open cards
 
-domDeckUl = document.getElementsByClassName('deck')[0]; //get DOM node representing deck UL
+domDeckUl = document.querySelector('.deck'); //get DOM node representing deck UL
 divCongrats = document.querySelector('div.congrats'); // congrats div
 ulStars = document.querySelector('ul.stars'); // top left stars
 ulCongratsStars = document.querySelector('.congrats .stars'); // congrats box stars
