@@ -86,11 +86,12 @@ h1 {
     text-align: center;
     width: 95%;
     position: absolute;
-    background-color: aquamarine;
+    background-color: rgba(100,200,200,0.9);
     border-radius: 30px;
     border: solid 5px darkgoldenrod;
     left: 15px;
     display: none;
+    padding: 20px 20px;
 }
 
 .score-panel {
@@ -127,5 +128,16 @@ h1 {
 
 .score-panel .restart {
     float: right;
+    cursor: pointer;
+}
+
+.btn-play-again {
+    color: darkgreen;
+    padding: 9px;
+    border-radius: 10px;
+    border: solid;
+    width: fit-content;
+    margin: auto;
+    background-color: lightgreen;
     cursor: pointer;
 }

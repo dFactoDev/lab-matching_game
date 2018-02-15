@@ -14,6 +14,7 @@ ulCongratsStars = document.querySelector('.congrats .stars'); // congrats box st
 document.onLoad = freshDeck(cardSet, domDeckUl, divCongrats); // create fresh deck on doc load
 
 document.querySelector('div.restart').addEventListener('click', function() { freshDeck(cardSet, domDeckUl, divCongrats); }); // add listener to restart button
+document.querySelector('.btn-play-again').addEventListener('click', function() { freshDeck(cardSet, domDeckUl, divCongrats); }); // add listener to congrats box play again button
 domCards = domDeckUl.getElementsByClassName('card'); // cards li elements
 
 for (i=0; i < domCards.length; i++ ) { domCards[i].addEventListener('click',
@@ -21,8 +22,6 @@ for (i=0; i < domCards.length; i++ ) { domCards[i].addEventListener('click',
 }
 
 // TODO: Timer feature
-// TODO: Restart on congrats
-// TODO: Score stars update after each move
 // TODO: CSS animations
 // TODO: Readme
 
