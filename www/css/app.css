@@ -141,3 +141,7 @@ h1 {
     background-color: lightgreen;
     cursor: pointer;
 }
+
+.timer {
+    margin-left: 25px;
+}

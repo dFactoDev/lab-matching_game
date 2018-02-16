@@ -1,23 +1,28 @@
+"use strict";
+
 var cardSet = ['fa-diamond', 'fa-diamond', 'fa-paper-plane-o', 'fa-paper-plane-o', 'fa-anchor', 'fa-anchor', 'fa-bolt', 'fa-bolt',
     'fa-cube', 'fa-cube', 'fa-leaf', 'fa-leaf', 'fa-bicycle', 'fa-bicycle', 'fa-bomb', 'fa-bomb'];
 
-var moveCount = 0; // # of attempts by user
-var cardsClicked = []; //list of currently selected cards
-var matchCount = 0; // to determine when all matches were made
-var openCards = []; //list of open cards
+var moveCount = 0, // # of attempts by user
+    cardsClicked = [], //list of currently selected cards
+    matchCount = 0, // to determine when all matches were made
+    openCards = [], //list of open cards
+    timeDivisions= { seconds: 0, minutes: 0 }, 
+    timeCounter;
 
-domDeckUl = document.querySelector('.deck'); //get DOM node representing deck UL
-divCongrats = document.querySelector('div.congrats'); // congrats div
-ulStars = document.querySelector('ul.stars'); // top left stars
-ulCongratsStars = document.querySelector('.congrats .stars'); // congrats box stars
+var domDeckUl = document.querySelector('.deck'); //get DOM node representing deck UL
+var domCards = domDeckUl.getElementsByClassName('card'); // cards li elements
+var divCongrats = document.querySelector('div.congrats'); // congrats div
+var ulStars = document.querySelector('ul.stars'); // top left stars
+var ulCongratsStars = document.querySelector('.congrats .stars'); // congrats box stars
+var domTimer = document.querySelector('.timer'); // timer element
 
 document.onLoad = freshDeck(cardSet, domDeckUl, divCongrats); // create fresh deck on doc load
 
 document.querySelector('div.restart').addEventListener('click', function() { freshDeck(cardSet, domDeckUl, divCongrats); }); // add listener to restart button
 document.querySelector('.btn-play-again').addEventListener('click', function() { freshDeck(cardSet, domDeckUl, divCongrats); }); // add listener to congrats box play again button
-domCards = domDeckUl.getElementsByClassName('card'); // cards li elements
 
-for (i=0; i < domCards.length; i++ ) { domCards[i].addEventListener('click',
+for (var i=0; i < domCards.length; i++ ) { domCards[i].addEventListener('click',
     function(e) { cardClicked(e.target); }); // add listener to each card li element
 }
 
@@ -52,6 +57,7 @@ function cardClicked(clickedCard) {
                 }, 500);
         }
         cardsClicked.splice(0);
+        if (moveCount === 0) { timeCounter = timer(timeDivisions, domTimer); } // start timer at first move 
         moveCount++;
         updateMovesDisplay(moveCount);
         updateScoreDisplay(ulStars, false, moveCount, 13, 20);
@@ -61,6 +67,26 @@ function cardClicked(clickedCard) {
         endGame(moveCount, divCongrats);
     }
 
+}
+
+
+function timer(objTimeDivisions, elementClock) {
+    
+    var fnTimer = setInterval( function() { 
+            
+        if (objTimeDivisions.seconds < 59) { objTimeDivisions.seconds++; }
+        else { objTimeDivisions.seconds = 0; objTimeDivisions.minutes++; }
+
+        updateTimerDisplay(objTimeDivisions.seconds, objTimeDivisions.minutes, elementClock); 
+
+        }, 1000 );
+    
+    return fnTimer;
+    
+}
+
+function updateTimerDisplay(intSec, intMin, elementClock) {
+    elementClock.innerHTML = intMin + ' min ' + intSec + ' sec'; 
 }
 
 function toggleCardStatus (stringStatus, elementCard) {
@@ -83,15 +109,20 @@ function toggleCardStatus (stringStatus, elementCard) {
 
 function freshDeck(arrayCardSet, elementDeckUl, elementCongratsDiv) {
 
+    clearInterval(timeCounter);
+    
     var deck = shuffle(arrayCardSet);
 
-    moveCount = 0;
-    matchCount = 0;
+    moveCount = 0; 
+    matchCount = 0; 
+    timeDivisions.minutes = 0; 
+    timeDivisions.seconds = 0;
 
     layoutDeck(deck, elementDeckUl);
     resetCardDisplay(elementDeckUl);
     updateMovesDisplay(moveCount);
     updateScoreDisplay(ulStars, true);
+    updateTimerDisplay(0,0, domTimer);
 
     elementCongratsDiv.style.display = 'none';
 
@@ -130,7 +161,7 @@ function updateScoreDisplay(elementStars, boolReset, moves, threshold3Star, thre
 
 function resetCardDisplay(elementDeckUl) {
 
-    ulDeckParent = elementDeckUl.parentNode; //to appendChild new deck later
+    var ulDeckParent = elementDeckUl.parentNode; //to appendChild new deck later
 
     var docFrag = document.createDocumentFragment();
     docFrag.appendChild(elementDeckUl);
@@ -146,7 +177,7 @@ function resetCardDisplay(elementDeckUl) {
 function layoutDeck(arrayDeck, elementDeckUl) {
     // arrayDeck - array containing the deck of cards
 
-    ulDeckParent = elementDeckUl.parentNode; //to appendChild new deck later
+    var ulDeckParent = elementDeckUl.parentNode; //to appendChild new deck later
 
     var docFrag = document.createDocumentFragment(); //Work on DocumentFragment to avoid reflow
     docFrag.appendChild(elementDeckUl); // fill with current 'deck' unordered list
@@ -161,18 +192,23 @@ function layoutDeck(arrayDeck, elementDeckUl) {
 
 function endGame(moves, elementCongratsDiv) {
 
+    clearInterval(timeCounter);
+
     elementCongratsDiv.style.display = 'block';
 
-    domDivCongratsParent = elementCongratsDiv.parentNode; // to appendChild document later
+    var domDivCongratsParent = elementCongratsDiv.parentNode; // to appendChild document later
 
     var docFrag = document.createDocumentFragment(); // work on doc frag to avoid too many reflows
     docFrag.appendChild(elementCongratsDiv);
 
-    docFrag.firstChild.children[1].innerHTML = "You finished in " + moves + " moves!";
+    docFrag.firstChild.children[1].innerHTML = "You finished with " + moves + " moves in " 
+            + timeDivisions.minutes + " minutes, " + timeDivisions.seconds + " seconds!";
 
     domDivCongratsParent.appendChild(docFrag.firstChild);
 
     updateScoreDisplay(ulCongratsStars, false, moves, 13, 20);
+    
+    
 
 }
 
