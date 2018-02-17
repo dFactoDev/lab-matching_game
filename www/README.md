@@ -1,20 +1,25 @@
-# Memory Game Project
+# Matching Game
+## The aim of the game
 
-## Table of Contents
+This game aims to test how good your visual memory is.
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+## How to play
 
-## Instructions
+You are presented with 16 hidden cards. Each card has a visually matching card in the same deck.
+The goal is to open a desired card and find it's matching card in the deck.
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+You click on any desired card to open it and then click on any other card which you believe matches the opened card.
 
-To get started, open `js/app.js` and start building out the app's functionality
+###### TIP: Each time a card is shown, memorize it so you can remember it later when you come accross it's matching card.
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+## Scoring
 
-## Contributing
+A "move" is counted as each time two cards are opened in order to find a match.
+Completing the game in 13 moves or less, earns you 3 stars! 25 or less earns 2 stars and anything more gets you 1 star.
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+## How good is your memory?
 
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+The more stars you get and the less time it takes you, the better your memory!
+
+Good luck!
+
