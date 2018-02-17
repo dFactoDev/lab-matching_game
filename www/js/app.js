@@ -26,8 +26,6 @@ for (var i=0; i < domCards.length; i++ ) { domCards[i].addEventListener('click',
     function(e) { cardClicked(e.target); }); // add listener to each card li element
 }
 
-// TODO: Timer feature
-// TODO: CSS animations
 // TODO: Readme
 
 function cardClicked(clickedCard) {
@@ -50,11 +48,13 @@ function cardClicked(clickedCard) {
             matchCount++; // increase match count
         }
         else { // if no match
-            toggleCardStatus('show', clickedCard); // just show the card symbol
+            toggleCardStatus('show', cardsClicked[1]); // just show the card symbol for clicked card
+            toggleCardStatus('no-match', cardsClicked[0]); // no-match animation for clicked card
+            toggleCardStatus('no-match', cardsClicked[1]); // no match animation for open card
             var cardsToClose = [ cardsClicked[0], cardsClicked[1]];
             setTimeout(function() {
                 for (var i = 0; i < cardsToClose.length; i++) { toggleCardStatus('close', cardsToClose[i]); }
-                }, 500);
+                }, 700);
         }
         cardsClicked.splice(0);
         if (moveCount === 0) { timeCounter = timer(timeDivisions, domTimer); } // start timer at first move 
@@ -100,8 +100,11 @@ function toggleCardStatus (stringStatus, elementCard) {
         case 'match':
             elementCard.classList.add('match');
             break;
+        case 'no-match':
+            elementCard.classList.add('no-match');
+            break;
         case 'close':
-            elementCard.classList.remove('show', 'open', 'match');
+            elementCard.classList.remove('show', 'open', 'match', 'no-match');
             break;
     }
 

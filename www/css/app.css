@@ -93,6 +93,19 @@ h1 {
     animation-iteration-count: 1;
 }
 
+@keyframes cardsNoMatch {
+    0%  {border: solid rgba(100,100,100,0.5);}
+    100%  {border: none; color: rgba(255,0,0,0.5)}
+}
+
+.deck .card.no-match {
+    animation-name: cardsNoMatch;
+    animation-duration: 0.4s;
+    animation-iteration-count: 1;
+    /*animation-delay: 0.3s;*/
+    animation-fill-mode: forwards;
+}
+
 .congrats {
     text-align: center;
     width: 95%;
