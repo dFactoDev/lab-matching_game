@@ -37,6 +37,14 @@ h1 {
  * Styles for the deck of cards
  */
 
+@keyframes newDeck {
+    0%  {background: linear-gradient(0deg, #02ccba 0%, #aa7ecd 100%);}
+    25% {background: linear-gradient(90deg, #02ccba 0%, #aa7ecd 100%);}
+    50% {background: linear-gradient(180deg, #02ccba 0%, #aa7ecd 100%);}
+    75% {background: linear-gradient(270deg, #02ccba 0%, #aa7ecd 100%);}
+    100% {background: linear-gradient(360deg, #02ccba 0%, #aa7ecd 100%);}
+}
+
 .deck {
     width: 660px;
     min-height: 680px;
@@ -50,6 +58,9 @@ h1 {
     align-items: center;
     margin: 0 0 3em;
     position: relative;
+    animation-name: newDeck;
+    animation-duration: 0.3s;
+    animation-iteration-count: 4;
 }
 
 .deck .card {
