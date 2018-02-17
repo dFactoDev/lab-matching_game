@@ -76,10 +76,21 @@ h1 {
     font-size: 33px;
 }
 
+@keyframes cardsMatched {
+    0%   {box-shadow: 0 0 15px 1px white; border-radius: 15px;}
+    25%  {box-shadow: 0 0 15px 2px white; border-radius: 20px;}
+    50%  {box-shadow: 0 0 15px 3px white; border-radius: 25px;}
+    75%  {box-shadow: 0 0 15px 2px white; border-radius: 20px;}
+    100% {box-shadow: 0 0 15px 1px white; border-radius: 15px;}
+}
+
 .deck .card.match {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
+    animation-name: cardsMatched;
+    animation-duration: 0.7s;
+    animation-iteration-count: 1;
 }
 
 .congrats {
