@@ -15,7 +15,7 @@ You click on any desired card to open it and then click on any other card which 
 ## Scoring
 
 A "move" is counted as each time two cards are opened in order to find a match.
-Completing the game in 13 moves or less, earns you 3 stars! 25 or less earns 2 stars and anything more gets you 1 star.
+Completing the game in 13 moves or less, earns you 3 stars! Within 20 earns 2 stars and anything more gets you 1 star.
 
 ## How good is your memory?
 
