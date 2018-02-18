@@ -10,7 +10,7 @@ The goal is to open a desired card and find it's matching card in the deck.
 
 You click on any desired card to open it and then click on any other card which you believe matches the opened card.
 
-###### TIP: Each time a card is shown, memorize it so you can remember it later when you come accross it's matching card.
+###### TIP: Each time a card is shown, say it out loud to help you memorize it.
 
 ## Scoring
 
